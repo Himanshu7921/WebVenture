@@ -25,16 +25,21 @@
         border: 2px solid #ccc;
         margin-bottom: 20px;
         padding: 15px;
-        border-radius: 8px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease-in-out;
+      }
+      .container:hover {
+        transform: translateY(-3px);
       }
 
       .grid-container {
         display: grid;
-        gap: 10px;
+        gap: 12px;
         background-color: #eee;
-        padding: 10px;
+        padding: 15px;
         margin-bottom: 10px;
-        border-radius: 6px;
+        border-radius: 10px;
       }
 
       .box {
@@ -42,8 +47,21 @@
         color: white;
         padding: 20px;
         font-size: 18px;
+        font-weight: 500;
+        padding: 20px;
+        border-radius: 10px;
+        display: flex;
         text-align: center;
+        align-items: center;
+        justify-content: center;
         border-radius: 6px;
+        box-shadow: rgba(0, 0, 0, 0.08);
+        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+      }
+
+      .box:hover{
+        transform: scale(1.05);
+        box-shadow: rgba(0, 0, 0, 0.15);
       }
 
       .box:nth-child(even) {
