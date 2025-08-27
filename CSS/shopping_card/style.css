@@ -11,10 +11,10 @@ h1{
 
 .shoe{
     width: 380px;
-    border: 3px solid rgb(167, 229, 208);
+    border: 3px solid rgb(0, 0, 0);
     border-radius: 20px;
+    border-style: ridge;
     
-
 }
 
 .container{
@@ -28,4 +28,34 @@ h1{
 }
 .content{
     text-align: center;
+}
+
+.buy{  
+    position: relative;
+    padding: 30px 60px ;
+    left: 0px;
+    border: 2px solid aqua;
+    border-radius: 40%;
+    background-color: black;
+    color: aliceblue;
+
+}
+
+.cart{
+    
+    position: relative;
+    right: -16px;
+    padding: 30px 30px;
+    border: 2px solid aqua;
+    border-radius: 40%;
+    background-color: black;
+    color: aliceblue;
+}
+
+.cart:hover::before{
+    transition: 0.4 ease-in-out;
+}
+
+.cart:hover::after{
+    transform: scaleX(1);
 }
