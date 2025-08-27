@@ -5,7 +5,8 @@ body{
     height: 100%;
 }
 
-h1{
+button{
+    font-size: large;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
@@ -14,6 +15,7 @@ h1{
     border: 3px solid rgb(0, 0, 0);
     border-radius: 20px;
     border-style: ridge;
+    transition: transform 0.2s ease-in-out;
     
 }
 
@@ -32,30 +34,47 @@ h1{
 
 .buy{  
     position: relative;
+    margin-top: 20px;
     padding: 30px 60px ;
     left: 0px;
     border: 2px solid aqua;
-    border-radius: 40%;
+    border-radius: 10px 40px 40px 10px;
     background-color: black;
     color: aliceblue;
-
+    box-shadow: rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease-in, box-shadow 0.2s ease-in-out;
 }
 
 .cart{
     
     position: relative;
-    right: -16px;
+    right: -28px;
+    margin-top: 20px;
     padding: 30px 30px;
     border: 2px solid aqua;
-    border-radius: 40%;
+    border-radius: 40px 10px 10px 40px;
     background-color: black;
     color: aliceblue;
+    box-shadow: rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-.cart:hover::before{
-    transition: 0.4 ease-in-out;
+.cart:hover{
+transform: scaleY(1.10) translateX(10px) rotate3d(-1,-1,4,5deg);
+background-color: rgb(120, 149, 149);
 }
 
-.cart:hover::after{
-    transform: scaleX(1);
+.buy:hover{
+transform: scaleY(1.10) translateX(10px) rotate3d(1,0,1,5deg);
+background-color: rgb(120, 149, 149);
+
+}
+
+.shoe:hover{
+    transform:  rotate3d(0,1,1,2deg) perspective(100px) translateZ(50px);
+}
+
+.cart-text{
+    display: inline-block;
+    margin-left: 30px;
 }
