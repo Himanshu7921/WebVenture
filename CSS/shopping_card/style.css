@@ -18,9 +18,7 @@ button{
     transition: transform 0.2s ease-in-out;
     padding-bottom: 5px;
     padding-right: 5px;
-    background-color: aliceblue;
-    
-    
+    background-color: aliceblue;    
 }
 
 .container{
@@ -34,13 +32,8 @@ button{
         /* Background setup */
     background: url("Aura.png") center center no-repeat;
     background-size: cover; /* makes it fill the whole container */
-    background-color: rgb(0, 0, 0); /* fallback color */
-    
+    background-color: rgb(0, 0, 0); /* fallback color */ 
 }
-
-
-
-
 
 .content{
     text-align: center;
@@ -86,7 +79,6 @@ background-color: rgb(120, 149, 149);
 .buy:hover{
 transform: scaleY(1.10) translateX(10px) rotate3d(1,0,1,5deg);
 background-color: rgb(120, 149, 149);
-
 }
 
 .shoe:hover{
@@ -106,6 +98,7 @@ h1{
     background-color: rgb(241, 241, 241);
     color: rgb(0, 0, 0);
 }
+
 h2{
     font-family: Georgia, 'Times New Roman', Times, serif;
     padding: 0.3rem;
@@ -121,6 +114,5 @@ h2{
     width: 150px;
     padding: 0;
     margin: -42px;
-    
 }
 
