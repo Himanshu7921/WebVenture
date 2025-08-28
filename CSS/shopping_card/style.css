@@ -16,6 +16,10 @@ button{
     border-radius: 20px;
     border-style: ridge;
     transition: transform 0.2s ease-in-out;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    background-color: aliceblue;
+    
     
 }
 
@@ -25,23 +29,34 @@ button{
     align-items: center;
     text-align: center;
     height: 100%;
-    background-color: rgb(255, 255, 255);
+    background-color: rgb(12, 12, 12);
     
+        /* Background setup */
+    background: url("Aura.png") center center no-repeat;
+    background-size: cover; /* makes it fill the whole container */
+    background-color: rgb(0, 0, 0); /* fallback color */
     
 }
+
+
+
+
+
 .content{
     text-align: center;
     padding: 3.5rem;
     background-color: rgb(185, 219, 244);
     border-radius: 5%;
+    width: 400px;
+    height: 500px;
 }
 
 .buy{  
     position: relative;
     margin-top: 20px;
     padding: 30px 70px ;
-    left: 0px;
-    border: 2px solid aqua;
+    left: 3px;
+    border: 2px solid rgb(255, 255, 255);
     border-radius: 10px 40px 40px 10px;
     background-color: black;
     color: aliceblue;
@@ -52,10 +67,10 @@ button{
 .cart{
     
     position: relative;
-    right: -21px;
+    right: -28px;
     margin-top: 20px;
     padding: 30px 23px;
-    border: 2px solid aqua;
+    border: 2px solid rgb(255, 255, 255);
     border-radius: 40px 10px 10px 40px;
     background-color: black;
     color: aliceblue;
@@ -101,3 +116,11 @@ h2{
     background-color: rgb(0, 0, 0);
     color: white;
 }
+
+.xelux{
+    width: 150px;
+    padding: 0;
+    margin: -42px;
+    
+}
+
