@@ -107,13 +107,14 @@ h2{
     border-radius: 20%;
     
     background-color: rgb(0, 0, 0);
-    color: white;
+    color: rgb(245, 235, 235);
 }
 
 .xelux{
     padding: 0;
     margin: -42px;
     width: 150px;
-    height: 100px;
+    height: 100px;  
+    
 }
 
