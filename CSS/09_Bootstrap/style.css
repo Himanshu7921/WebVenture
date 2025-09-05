@@ -6,6 +6,7 @@ body{
     align-items: center;
 }
 
-body:hover{
+button:hover{
     background-color: aqua;
+    transform: scale(1.15);
 }
