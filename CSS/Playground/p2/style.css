@@ -1,0 +1,16 @@
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.section-title h2 {
+  font-weight: bold;
+  color: #a855f7; /* purple */
+}
+
+.section-title span {
+  flex: 1;
+  height: 2px;
+  background: linear-gradient(to right, #a855f7, transparent);
+}
