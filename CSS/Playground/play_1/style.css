@@ -60,12 +60,9 @@ li a{
   color: white;
   font-size: 30px;
   font-weight: bold;
-  margin-right: 55px;
+  margin-right: 65px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  border: 5px solid rgb(8, 8, 8);
-  padding: 10px;
-  background-color: rgb(143, 127, 238);
-  border-radius: 8px;
+  display: inline-block;
 }
 
 h1{
@@ -84,4 +81,22 @@ h1{
   width: 100%;           /* keep full width */
   object-fit: cover;     /* crops instead of squishing */
   object-position: top;  /* crops from the top */
+}
+
+li a::after{
+  content: "";
+  width: 0;
+  height: 3px;
+  background-color: rgb(143, 127, 238);
+  margin: auto;
+  display: block;
+}
+li a:hover::after{
+  width: 100%;
+  transition: width 0.3s linear;
+}
+
+ul{
+  display: flex;
+  justify-content: center;
 }
