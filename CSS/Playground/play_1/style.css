@@ -63,7 +63,7 @@ li a{
   margin-right: 65px;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   display: inline-block;
-  background-color:  black;
+  background-color: black;
 }
 
 h1{
@@ -92,6 +92,7 @@ li a::after{
   margin: auto;
   display: block;
 }
+
 li a:hover::after{
   width: 100%;
   transition: width 0.3s linear;
