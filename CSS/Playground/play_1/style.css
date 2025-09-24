@@ -81,7 +81,7 @@ h1{
   height: 1420px;         /* set desired display height */
   width: 100%;           /* keep full width */
   object-fit: cover;     /* crops instead of squishing */
-  object-position: top;  /* crops from the top*/
+  object-position: top;  /* crops from the top */
 }
 
 li a::after{
