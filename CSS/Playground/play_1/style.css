@@ -95,7 +95,7 @@ li a::after{
 
 li a:hover::after{
   width: 100%;
-  transition: width 0.3s  linear;
+  transition: width 0.3s linear;
 }
 
 ul{
