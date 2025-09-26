@@ -64,6 +64,8 @@ li a{
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   display: inline-block;
   background-color: black;
+  padding: 10px;
+  border-radius: 8px;
 }
 
 h1{
