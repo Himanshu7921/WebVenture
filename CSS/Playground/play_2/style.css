@@ -1,0 +1,12 @@
+#carouselExampleControls {
+  width: 100%;       /* full width */
+  max-width: 900px; /* optional: limit max size */
+  margin: auto;
+  height: 100%;
+}
+
+#carouselExampleControls img {
+  height: 70vh;
+        /* set desired height */
+  /* crop image to fit nicely */
+}
