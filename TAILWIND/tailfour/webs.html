@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI Noise Pollution Mapping — Demo</title>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-sA+e2kGk0tY1r2f6S0s2q4s0p9rQ+u1p2b6kGk0XQGI=" crossorigin=""/>
+
+  <style>
+    :root{--accent:#1f6feb;--muted:#666}
+    html,body,#map{height:100%;margin:0;padding:0}
+    body{font-family:Inter,system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#111}
+    .app{display:grid;grid-template-columns:320px 1fr;height:100vh}
+    .panel{padding:18px;border-right:1px solid #eee;overflow:auto}
+    h1{font-size:18px;margin:0 0 8px}
+    p.small{font-size:13px;color:var(--muted);margin:0 0 12px}
+    .control{margin-bottom:12px}
+    label{display:block;font-size:13px;margin-bottom:6px}
+    input[type=file]{width:100%}
+    button{background:var(--accent);color:#fff;border:0;padding:8px 10px;border-radius:8px;cursor:pointer}
+    .muted{color:var(--muted);font-size:13px}
+    #map{width:100%;height:100%}
+    .stat{padding:8px;background:#f8f9fb;border-radius:8px;margin-bottom:8px}
+    .footer{font-size:12px;color:var(--muted);margin-top:8px}
+    .range{width:100%}
+    .checkbox-row{display:flex;gap:8px;align-items:center}
+    .inline{display:inline-block}
+    .kpi{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{background:#fff;border:1px solid #eee;padding:6px 8px;border-radius:8px;font-size:13px}
+    a.link{color:var(--accent);text-decoration:none}
+  </style>
+
+</head>
+<body>
+  <div class="app">
+    <div class="panel" id="panel">
+      <h1>AI Noise Pollution Mapping</h1>
+      <p class="small">Upload noise sensor data (CSV or GeoJSON) or use the sample dataset. The map will show live heatmap + markers, filter by time, and run a simple AI hotspot detection (client-side).</p>
+
+      <div class="control">
+        <label>Upload CSV (lat,lon,db,timestamp) or GeoJSON</label>
+        <input id="fileInput" type="file" accept=".csv,.geojson,application/json" />
+      </div>
+
+      <div class="control">
+        <button id="loadSample">Load sample data</button>
+      </div>
+
+      <div class="control">
+        <label>Time filter (timestamp ISO or ms)</label>
+        <input id="timeRange" class="range" type="range" min="0" max="100" value="100" />
+        <div class="muted">Showing up to: <span id="timeLabel">All</span></div>
+      </div>
+
+      <div class="control">
+        <label>Heatmap intensity slider</label>
+        <input id="intensity" class="range" type="range" min="1" max="50" value="25" />
+      </div>
+
+      <div class="control">
+        <label>AI Hotspot Detector</label>
+        <div class="checkbox-row">
+          <input id="runAI" type="checkbox" checked /> <label for="runAI" class="inline">Enable client-side hotspot detection</label>
+        </div>
+        <small class="muted">The demo runs a lightweight clustering + moving-average smoothing to detect persistent hotspots. For production replace with a server-side ML model or streaming inference.</small>
+      </div>
+
+      <div class="control">
+        <label>K (clusters for hotspot analysis)</label>
+        <input id="kClusters" type="number" min="1" max="20" value="3" />
+      </div>
+
+      <div class="control">
+        <button id="analyzeBtn">Run analysis</button>
+      </div>
+
+      <div class="control">
+        <div class="kpi">
+          <div class="chip">Points: <span id="countPoints">0</span></div>
+          <div class="chip">Avg dB: <span id="avgDb">—</span></div>
+          <div class="chip">Max dB: <span id="maxDb">—</span></div>
+        </div>
+      </div>
+
+      <div class="footer">
+        <div>How to use:</div>
+        <ol>
+          <li>Click <em>Load sample data</em> or upload a CSV with columns: <code>lat,lon,db,timestamp</code>.</li>
+          <li>Adjust sliders and click <em>Run analysis</em>.</li>
+        </ol>
+        <div style="margin-top:8px">Want server-side integration (real sensors, ML inference)? Reply and I'll add a Node/Flask sample.</div>
+      </div>
+    </div>
+
+    <div id="map"></div>
+  </div>
+
+  <!-- Leaflet JS -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-o9N1j7k9rF1gk9G7gGjSx4u3j0l3y2w5k9Z8m8U1bPQ=" crossorigin=""></script>
+  <!-- heatmap plugin -->
+  <script src="https://unpkg.com/leaflet.heat@0.2.0/dist/leaflet-heat.js"></script>
+
+  <script>
+    // ==========================
+    // Simple single-file app
+    // ==========================
+
+    // Map init
+    const map = L.map('map').setView([28.6139,77.2090], 12); // default: New Delhi
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    // Globals
+    let rawPoints = []; // {lat, lon, db, t}
+    let heatLayer = L.heatLayer([], {radius: 25, blur: 15, maxZoom: 17}).addTo(map);
+    let markersGroup = L.layerGroup().addTo(map);
+    let clusterMarkers = L.layerGroup().addTo(map);
+
+    const fileInput = document.getElementById('fileInput');
+    const loadSample = document.getElementById('loadSample');
+    const intensity = document.getElementById('intensity');
+    const timeRange = document.getElementById('timeRange');
+    const timeLabel = document.getElementById('timeLabel');
+    const countPoints = document.getElementById('countPoints');
+    const avgDb = document.getElementById('avgDb');
+    const maxDb = document.getElementById('maxDb');
+    const runAI = document.getElementById('runAI');
+    const kClusters = document.getElementById('kClusters');
+    const analyzeBtn = document.getElementById('analyzeBtn');
+
+    // Helpers: parse CSV (simple)
+    function parseCSV(text){
+      const rows = text.trim().split(/\r?\n/).map(r=>r.split(','));
+      // try to detect header
+      let start = 0; let header = null;
+      if(rows.length===0) return [];
+      if(isNaN(parseFloat(rows[0][0]))) { header = rows[0]; start = 1; }
+      const cols = header ? header.map(c=>c.trim().toLowerCase()) : null;
+      const out = [];
+      for(let i=start;i<rows.length;i++){
+        const r = rows[i];
+        if(r.length<3) continue;
+        const a = r.map(x=>x.trim());
+        // try to map by header or position
+        let lat, lon, db, t;
+        if(cols){
+          const idx = (name)=>{
+            const i = cols.indexOf(name);
+            return i>=0?i:-1;
+          }
+          lat = idx('lat')>=0?a[idx('lat')]:a[0];
+          lon = idx('lon')>=0?a[idx('lon')]:a[1];
+          db = idx('db')>=0?a[idx('db')]:a[2];
+          t = idx('timestamp')>=0?a[idx('timestamp')]:a[3]||Date.now();
+        } else {
+          lat=a[0]; lon=a[1]; db=a[2]; t=a[3]||Date.now();
+        }
+        const point = {lat:parseFloat(lat), lon:parseFloat(lon), db:parseFloat(db), t:Date.parse(t)||Number(t)||Date.now()};
+        if(!isNaN(point.lat) && !isNaN(point.lon)) out.push(point);
+      }
+      return out;
+    }
+
+    // Load GeoJSON
+    function parseGeoJSON(obj){
+      const out = [];
+      if(obj.type==='FeatureCollection'){
+        for(const f of obj.features){
+          if(f.geometry && f.geometry.type==='Point'){
+            const [lon,lat] = f.geometry.coordinates;
+            const props = f.properties||{};
+            out.push({lat:lat,lon:lon,db:parseFloat(props.db)||parseFloat(props.dB)||parseFloat(props.noise)||0,t:Date.parse(props.timestamp)||Date.now()});
+          }
+        }
+      }
+      return out;
+    }
+
+    // Render points
+    function render(){
+      // filter by time slider
+      const maxPercent = parseInt(timeRange.value,10);
+      const cutoffIndex = Math.floor((maxPercent/100)*rawPoints.length);
+      let filtered = rawPoints.slice(0, cutoffIndex||rawPoints.length);
+
+      // update stats
+      countPoints.textContent = filtered.length;
+      if(filtered.length){
+        const dbs = filtered.map(p=>p.db||0);
+        const avg = (dbs.reduce((a,b)=>a+b,0)/dbs.length).toFixed(1);
+        const mx = Math.max(...dbs).toFixed(1);
+        avgDb.textContent = avg;
+        maxDb.textContent = mx;
+      } else { avgDb.textContent='—'; maxDb.textContent='—'; }
+
+      // heatmap points: [lat,lon,intensity]
+      const intensityVal = parseFloat(intensity.value);
+      const heatPoints = filtered.map(p=>[p.lat,p.lon, Math.max(0.5,(p.db||40)/intensityVal)]);
+      heatLayer.setLatLngs(heatPoints);
+      heatLayer.setOptions({radius: 25, blur: 15});
+
+      // markers
+      markersGroup.clearLayers();
+      for(const p of filtered){
+        const m = L.circleMarker([p.lat,p.lon], {radius:6, weight:1, fillOpacity:0.9}).bindPopup(`<b>dB:</b> ${p.db}<br><b>time:</b> ${new Date(p.t).toLocaleString()}`);
+        markersGroup.addLayer(m);
+      }
+
+      clusterMarkers.clearLayers();
+    }
+
+    // Simple K-means (Euclidean on lat/lon)
+    function kmeans(points, k=3, maxIter=50){
+      if(points.length===0) return [];
+      const pts = points.map(p => [p.lat, p.lon]);
+      // init: random centroids
+      let centroids = [];
+      for(let i=0;i<k;i++){ centroids.push(pts[Math.floor(Math.random()*pts.length)].slice()); }
+      let assignments = new Array(pts.length).fill(-1);
+      for(let iter=0;iter<maxIter;iter++){
+        let changed=false;
+        // assign
+        for(let i=0;i<pts.length;i++){
+          const p=pts[i];
+          let best=-1; let bdist=Infinity;
+          for(let c=0;c<k;c++){
+            const d = (p[0]-centroids[c][0])**2 + (p[1]-centroids[c][1])**2;
+            if(d<bdist){bdist=d;best=c}
+          }
+          if(assignments[i]!==best){changed=true; assignments[i]=best}
+        }
+        // update
+        const sums = Array.from({length:k}, ()=>[0,0,0]);
+        for(let i=0;i<pts.length;i++){
+          const a = assignments[i]; sums[a][0]+=pts[i][0]; sums[a][1]+=pts[i][1]; sums[a][2]+=1;
+        }
+        for(let c=0;c<k;c++){
+          if(sums[c][2]>0){ centroids[c][0]=sums[c][0]/sums[c][2]; centroids[c][1]=sums[c][1]/sums[c][2]; }
+        }
+        if(!changed) break;
+      }
+      return centroids.map(c=>({lat:c[0],lon:c[1]}));
+    }
+
+    // Simple hotspot scoring: higher average dB -> more "hot"
+    function detectHotspots(points, k=3){
+      const centers = kmeans(points,k);
+      // compute average db around each center
+      const clusters = centers.map(c=>({lat:c.lat,lon:c.lon,sum:0,count:0}));
+      for(const p of points){
+        // assign to nearest center
+        let best=0; let bd=Infinity;
+        for(let i=0;i<centers.length;i++){
+          const c=centers[i]; const d=(p.lat-c.lat)**2+(p.lon-c.lon)**2; if(d<bd){bd=d;best=i}
+        }
+        clusters[best].sum += (p.db||0); clusters[best].count += 1;
+      }
+      for(const c of clusters){ c.avg = c.count?c.sum/c.count:0; }
+      clusters.sort((a,b)=>b.avg-a.avg);
+      return clusters;
+    }
+
+    // Event bindings
+    fileInput.addEventListener('change', e=>{
+      const f = e.target.files[0];
+      if(!f) return;
+      const reader = new FileReader();
+      reader.onload = ev => {
+        const txt = ev.target.result;
+        try{
+          if(f.name.toLowerCase().endsWith('.geojson') || txt.trim().startsWith('{')){
+            const obj = JSON.parse(txt);
+            rawPoints = parseGeoJSON(obj);
+          } else {
+            rawPoints = parseCSV(txt);
+          }
+          rawPoints.sort((a,b)=>a.t-b.t);
+          render();
+          map.fitBounds(rawPoints.map(p=>[p.lat,p.lon]));
+        } catch(err){ alert('Failed to parse file: '+err); }
+      }
+      reader.readAsText(f);
+    });
+
+    loadSample.addEventListener('click', ()=>{
+      // generate sample data: cluster centers + noise
+      const centers = [ [28.67,77.22,75], [28.60,77.20,68], [28.62,77.26,72] ];
+      rawPoints = [];
+      const now = Date.now();
+      for(let i=0;i<300;i++){
+        const c = centers[i%centers.length];
+        const lat = c[0] + (Math.random()-0.5)/200;
+        const lon = c[1] + (Math.random()-0.5)/200;
+        const db = Math.max(30, c[2] + (Math.random()-0.5)*8);
+        const t = now - Math.floor(Math.random()*1000*60*60*24*7); // within a week
+        rawPoints.push({lat,lon,db,t});
+      }
+      rawPoints.sort((a,b)=>a.t-b.t);
+      render();
+      map.fitBounds(rawPoints.map(p=>[p.lat,p.lon]));
+    });
+
+    intensity.addEventListener('input', render);
+    timeRange.addEventListener('input', ()=>{
+      const val = parseInt(timeRange.value,10);
+      timeLabel.textContent = val===100? 'All' : `${val}% of earliest->latest`;
+      render();
+    });
+
+    analyzeBtn.addEventListener('click', ()=>{
+      if(rawPoints.length===0){ alert('No points loaded — load sample or upload CSV'); return; }
+      const filtered = rawPoints.slice(0, Math.floor((parseInt(timeRange.value)/100)*rawPoints.length) || rawPoints.length);
+      const k = Math.max(1, parseInt(kClusters.value,10)||3);
+      const clusters = detectHotspots(filtered, k);
+      // show cluster markers
+      clusterMarkers.clearLayers();
+      for(let i=0;i<clusters.length;i++){
+        const c = clusters[i];
+        const color = i===0? 'red' : i===1? 'orange' : 'purple';
+        const r = Math.min(60, 15 + (c.avg||0)-40);
+        const m = L.circle([c.lat,c.lon], {radius: r*10, color: color, fillColor: color, fillOpacity:0.15}).bindPopup(`<b>Hotspot #${i+1}</b><br>Avg dB: ${c.avg.toFixed(1)}<br>Samples: ${c.count}`);
+        clusterMarkers.addLayer(m);
+      }
+      // zoom to top hotspot
+      if(clusters.length) map.flyTo([clusters[0].lat,clusters[0].lon], 14);
+
+      // If AI checked, run simple smoothing / predictive scoring
+      if(runAI.checked){
+        // naive moving average over nearest points -> risk score
+        for(const p of filtered){
+          // compute average db of neighbors within 200m (approx)
+          let sum=0,cnt=0;
+          for(const q of filtered){
+            const dlat = (p.lat-q.lat)*111000; const dlon = (p.lon-q.lon)*85000; // rough meters
+            const dist = Math.sqrt(dlat*dlat+dlon*dlon);
+            if(dist<200){ sum+=q.db; cnt++; }
+          }
+          p.risk = cnt? (sum/cnt) : p.db;
+        }
+        // show popup on top marker with risk
+        markersGroup.eachLayer(layer=>{
+          const latlng = layer.getLatLng();
+          const p = filtered.find(x=>Math.abs(x.lat-latlng.lat)<1e-5 && Math.abs(x.lon-latlng.lng)<1e-5);
+          if(p){ layer.bindPopup(`<b>dB:</b> ${p.db}<br><b>risk:</b> ${p.risk.toFixed(1)}`); }
+        });
+      }
+    });
+
+    // initial UI state
+    timeRange.value = 100;
+    timeLabel.textContent = 'All';
+
+    // Expose for debugging
+    window.__raw = rawPoints;
+
+  </script>
+</body>
+</html>
