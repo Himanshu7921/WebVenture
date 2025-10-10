@@ -340,7 +340,7 @@
           }
           p.risk = cnt? (sum/cnt) : p.db;
         }
-        // show popup on top marker with risk
+        // show popup on top marker with
         markersGroup.eachLayer(layer=>{
           const latlng = layer.getLatLng();
           const p = filtered.find(x=>Math.abs(x.lat-latlng.lat)<1e-5 && Math.abs(x.lon-latlng.lng)<1e-5);
