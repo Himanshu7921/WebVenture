@@ -87,7 +87,7 @@ button:hover {
 button::before {
   content: "";
   position: absolute;
-  bottom: -5px; /* just below button */
+  bottom: -5px;
   width: 100%;
   left: 0;
   height: 6px;
