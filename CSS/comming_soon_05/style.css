@@ -91,7 +91,7 @@ button::before {
   width: 100%;
   left: 0;
   height: 6px;
-  background: #a53040;
+  background: #a53040; 
   border-radius: 0 0 50% 50%;
   opacity: 0;
 }
