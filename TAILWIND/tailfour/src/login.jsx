@@ -13,7 +13,7 @@ export default function Login(props) {
   // UI (must return valid JSX; one root element)
   return (
     <div className="p-4">
-      <h1 className="bg-amber-700 underlinn"><p className="text-2xl">Login</p></h1>
+      <h1 className="bg-amber-700 underlinn"> <p className="text-2xl">Login</p></h1>
       
       
     </div>
