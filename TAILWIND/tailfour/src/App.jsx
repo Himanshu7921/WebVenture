@@ -10,8 +10,6 @@ function App() {
 
   return (
     <div>
-
-
       <main>
         {view === 'login' ? <Login /> : <Signup />}
       </main>
