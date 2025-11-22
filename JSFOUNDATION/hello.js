@@ -67,3 +67,9 @@ const car = { myCar: "Saturn", getCar: carTypes("Honda"), special: sales };
 console.log(car.myCar); // Saturn
 console.log(car.getCar); // Honda
 console.log(car.special); // Toyota
+console.log(carTypes("Kids specially to himanshu singh"));
+console.log("37" - 7); // 30
+console.log("37" + 7); // 377
+ "37" * 7; // 259
+
+
