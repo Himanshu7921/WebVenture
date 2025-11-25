@@ -280,7 +280,27 @@ console.log("Is there anything else you'd like?");
 // var f = 49;
 // console.log(f);
 
+function getMonthName(mo) {
+  mo--; // Adjust month number for array index (so that 0 = Jan, 11 = Dec)
+  // prettier-ignore
+  const months = [
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec",
+  ];
+  if (!months[mo]) {
+    throw new Error("Invalid month code"); // throw keyword is used here
+  }
+  return months[mo];
+}
 
+try {
+  // statements to try
+  myMonth = "Jun"
+  //monthName = getMonthName(19);
+  console.log(monthName); // function could throw exception
+} catch (e) {
+  console.log("Error"); // pass exception object to error handler (i.e. your own function)
+ } 
 
 
 
