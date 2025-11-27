@@ -300,7 +300,7 @@ try {
   console.log(monthName); // function could throw exception
 } catch (e) {
   console.log("Error"); // pass exception object to error handler (i.e. your own function)
-} 
+ } 
 
 
 
