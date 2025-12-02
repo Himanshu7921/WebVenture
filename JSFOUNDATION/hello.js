@@ -293,6 +293,8 @@ function getMonthName(mo) {
   return months[mo];
 }
 
+//console.log(getMonthName(3));
+
 try {
   // statements to try
   myMonth = "Jun"
@@ -300,7 +302,51 @@ try {
   console.log(monthName); // function could throw exception
 } catch (e) {
   console.log("Error"); // pass exception object to error handler (i.e. your own function)
- } 
+} 
 
 
 
+
+function f() {
+  try {
+    console.log(0);     // Step 1
+    throw "bogus";      // Step 2 → error thrown
+  } catch (e) {
+    console.log(1);     // Step 3 → catch handles the error
+    return console.log(True);       // Step 4 → return is scheduled, not executed yet
+  } finally {
+    console.log(3);     // Step 5 → finally ALWAYS runs
+    return console.log(false);       // Step 6 → overrides the earlier return
+  }
+}
+f();
+
+
+
+
+function f() {
+  try {
+    throw "bogus";
+  } catch (e) {
+    console.log('caught inner "bogus"');
+    // This throw statement is suspended until
+    // finally block has completed
+    throw e;
+  } finally {
+    return false; // overwrites the previous "throw"
+    // `f` exits here
+  }
+}
+
+try {
+  console.log(f());
+} catch (e) {
+  // this is never reached!
+  // while f() executes, the `finally` block returns false,
+  // which overwrites the `throw` inside the above `catch`
+  console.log('caught outer "bogus"');
+}
+
+// Logs:
+// caught inner "bogus"
+// false
