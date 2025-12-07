@@ -345,7 +345,7 @@ try {
   // while f() executes, the `finally` block returns false,
   // which overwrites the `throw` inside the above `catch`
   console.log('caught outer "bogus"');
-}
+ }
 
 // Logs:
 // caught inner "bogus"
