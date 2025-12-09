@@ -350,3 +350,72 @@ try {
 // Logs:
 // caught inner "bogus"
 // false
+
+for (let step = 0; step < 5; step++) {
+  // Runs 5 times, with values of step 0 through 4.
+  console.log("Walking east one step");
+}
+
+
+function countSelected(selectObject) {
+  let numberSelected = 0;
+  for (let i = 0; i < selectObject.options.length; i++) {
+    if (selectObject.options[i].selected) { //select is inbuilt feature of html if selected then its true
+      numberSelected++;
+    }
+  }
+  return numberSelected;
+}
+
+const btn = document.getElementById("btn");
+
+btn.addEventListener("click", () => {
+  const musicTypes = document.selectForm.musicTypes;
+  console.log(`You have selected ${countSelected(musicTypes)} option(s).`);
+});
+
+
+
+
+
+let i = 0;
+do {
+  i += 1;
+  console.log(i);
+} while (i < 5);
+
+
+
+
+
+let n = 0;
+let m = 0;
+while (n < 3) {
+  n++;
+  console.log("n=",n)
+  m += n;
+  console.log("m=",m)
+}
+
+
+
+
+
+let a = 0;
+let p = 0;
+labelCancelLoops: while (true) {
+  console.log("Outer loops:", a);
+  a += 1;
+  p = 1;
+  while (true) {
+    console.log("Inner loops:", p);
+    p += 1;
+    if (p === 10 && a === 10) {
+      break labelCancelLoops;
+    } else if (p === 10) {
+      break;
+    }
+  }
+}
+
+

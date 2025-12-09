@@ -5,10 +5,47 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>My JavaScript Page</title>
     </head>
-    <body>
-        <h1>Hello from HTML!</h1>
 
-        <!-- Link your JavaScript file here -->
-        <script src="hello.js"></script>
+<style>
+  label {
+    font-size: 20px;
+  }
+
+  #musicTypes {
+    font-size: 20px;
+    width: 250px;
+    height: 150px;
+  }
+
+  #btn {
+    font-size: 20px;      /* bigger text */
+    padding: 10px 20px;   /* bigger button */
+    margin-top: 10px;     /* space above button */
+    cursor: pointer;      /* pointer on hover */
+  }
+</style>
+
+    <body>
+
+    <h1>Hello from HTML!</h1>
+    <form name="selectForm">
+      <label for="musicTypes" style="font-size: 50px;">Choose some music types:</label>
+
+      <select id="musicTypes" name="musicTypes" multiple>
+        <option >R&B</option>
+        <option>Jazz</option>
+        <option>Blues</option>
+        <option>New Age</option>
+        <option>Classical</option>
+        <option>Opera</option>
+      </select>
+
+      <button id="btn" type="button">How many are selected?</button>
+    </form>
+
+    <!-- Link to your JS file -->
+    <script src="Basics0.js"></script>
+    <script src="Basics1.js"></script>
+    
     </body>
     </html>
