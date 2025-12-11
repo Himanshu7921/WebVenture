@@ -66,7 +66,7 @@ for (const [key, val] of Object.entries(objj)) {
 
 
 
-
+ 
 //Functions in Js
 
 function myFunc(theObject) {
