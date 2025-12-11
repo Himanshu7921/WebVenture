@@ -55,7 +55,7 @@ for (const i of arr) {
 
 
 
-const objj = { foo: 1, bar: 2 };
+const objj = { foo: 1, bar: "2" };
 
 for (const [key, val] of Object.entries(objj)) {
   console.log(key, val);
@@ -82,3 +82,81 @@ const myCar = {
 console.log(myCar.make); // "Honda"
 myFunc(myCar);
 console.log(myCar.make); // "Toyota"
+
+
+
+
+
+//When you pass an array as a parameter, if the function changes any of the array's values,
+// that change is visible outside the function, as shown in the following example:
+
+
+function myFunc(theArr) {
+  theArr[0] = 30;
+}
+
+const Arr = [45];
+
+console.log(Arr[0]); // 45
+myFunc(Arr);
+console.log(Arr[0]); // 30
+
+
+
+
+
+//Function declarations and expressions can be nested, which forms a scope chain. For example:
+
+function addSquares(a, b) {
+  function square(x) {
+    return x * x;
+  }
+  return square(a) + square(b);
+}
+
+console.log(addSquares(4,5));
+
+
+
+
+
+//Such a function can be anonymous; it does not have to have a name.
+//For example, the function square could have been defined as:
+
+const square = function (number) {
+  return number * number;
+};
+
+console.log(square(4)); // 16
+
+
+
+
+
+//Factorial 
+const factorial = function fac(n) {
+  return n < 2 ? 1 : n * fac(n - 1);
+};
+
+console.log(factorial(4)); // 6
+
+
+
+
+//Function expressions are convenient when passing a function as an argument to another function.
+//The following example defines a map function that should receive a function as first argument and an array as second argument.
+//Then, it is called with a function defined by a function expression:
+
+function map(f, a) {
+  const result = new Array(a.length);
+  for (let i = 0; i < a.length; i++) {
+    result[i] = f(a[i]);
+  }
+  return result;
+}
+
+const numbers = [0, 1, 2, 5, 10];
+const cubedNumbers = map(function (x) {
+  return x * x * x;
+}, numbers);
+console.log(cubedNumbers); // [0, 1, 8, 125, 1000]
