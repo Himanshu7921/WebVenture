@@ -160,3 +160,75 @@ const cubedNumbers = map(function (x) {
   return x * x * x;
 }, numbers);
 console.log(cubedNumbers); // [0, 1, 8, 125, 1000]
+
+
+
+
+
+//A function can call itself. For example, here is a function that computes factorials recursively:
+
+function factoriall(n) {
+  if (n === 0 || n === 1) {
+    return 1;
+  }
+  return n * factoriall(n - 1);
+}
+
+
+
+
+
+//In fact, recursion itself uses a stack: the function stack. 
+//The stack-like behavior can be seen in the following example:
+
+function foo(i) {
+  if (i < 0) {
+    return console.log(1);
+  }
+  console.log(`begin: ${i}`);
+  foo(i - 1);
+  console.log(`end: ${i}`);
+}
+foo(3);
+
+// Logs:
+// begin: 3
+// begin: 2
+// begin: 1
+// begin: 0
+// 1
+// end: 0
+// end: 1
+// end: 2
+// end: 3
+
+
+
+
+//Functions scopes and closure
+
+// The following variables are defined in the global scope
+const num1 = 20;
+const num2 = 3;
+const nname = "Chamakh";
+
+// This function is defined in the global scope
+function multiply() {
+  return num1 * num2;
+}
+
+console.log(multiply()); // 60
+
+// A nested function example
+function getScore() {
+  const num1 = 2;
+  const num2 = 3;
+
+  function add() {
+    return `${nname} scored ${num1 + num2}`;
+  }
+
+  return add();
+}
+
+console.log(getScore()); // "Chamakh scored 5"
