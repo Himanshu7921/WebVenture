@@ -205,6 +205,7 @@ foo(3);
 
 
 
+
 //Functions scopes and closure
 
 // The following variables are defined in the global scope
@@ -232,3 +233,177 @@ function getScore() {
 }
 
 console.log(getScore()); // "Chamakh scored 5"
+
+
+
+
+
+// Little bit complex 
+const createPet = function (name) {
+  let sex;
+
+  const pet = {
+    // setName(newName) is equivalent to setName: function (newName)
+    // in this context
+    setName(newName) {
+      name = newName;
+    },
+
+    getName() {
+      return name;
+    },
+
+    getSex() {
+      return sex;
+    },
+
+    setSex(newSex) {
+      if (
+        typeof newSex === "string" &&
+        (newSex.toLowerCase() === "male" || newSex.toLowerCase() === "female")
+      ) {
+        sex = newSex;
+      }
+    },
+  };
+
+  return pet;
+};
+
+const pet = createPet("Vivie");
+console.log(pet.getName()); // Vivie
+
+pet.setName("Oliver");
+pet.setSex("male");
+console.log(pet.getSex()); // male
+console.log(pet.getName()); // Oliver
+
+
+
+
+
+
+// The inner variables of the inner functions act as safe stores for the outer arguments and variables.
+// They hold "persistent" and "encapsulated" data for the inner functions to work with.
+// The functions do not even have to be assigned to a variable, or have a name.
+
+const getCode = (function () {
+  const apiCode = "0]Eal(eh&2"; // A code we do not want outsiders to be able to modify…
+
+  return function () {
+    return apiCode;
+  };
+})();
+
+console.log(getCode()); // "0]Eal(eh&2"
+
+
+
+
+
+// A function (A) contains a function (B), which itself contains a function (C).
+// Both functions B and C form closures here. So, B can access A, and C can access B.
+// In addition, since C can access B which can access A, C can also access A.
+
+function A(x) {
+  function B(y) {
+    function C(z) {
+      console.log(x + y + z);
+    }
+    C(3);
+  }
+  B(2);
+}
+A(1); // Logs 6 (which is 1 + 2 + 3)
+
+
+
+
+
+
+// The name conflict happens at the statement return x * 2 and is between inside's parameter x and outside's variable x.
+// The scope chain here is inside => outside => global object.
+// Therefore, inside's x takes precedences over outside's x, and 20 (inside's x) is returned instead of 10 (outside's x).
+
+function outside() {
+  const x = 5;
+  function inside(x) {
+    return x * 2;
+  }
+  return inside;
+}
+
+console.log(outside()(10)); // 20 (instead of 10)
+
+
+
+
+
+// arguments lets you access all values passed to a function: first is arguments[0], total is arguments.length.
+//  It allows handling unknown numbers of arguments, like joining many strings dynamically.
+
+function myConcat(separator) {
+  let result = ""; // initialize list
+  // iterate through arguments
+  for (let i = 1; i < arguments.length; i++) {
+    result += arguments[i] + separator;
+  }
+  return result;
+}
+
+console.log(myConcat(", ", "red", "orange", "blue"));
+// "red, orange, blue, "
+
+console.log(myConcat("; ", "elephant", "giraffe", "lion", "cheetah"));
+// "elephant; giraffe; lion; cheetah; "
+
+console.log(myConcat(". ", "sage", "basil", "oregano", "pepper", "parsley"));
+// "sage. basil. oregano. pepper. parsley. "
+
+
+
+
+
+
+// n the following example, if no value is provided for b, its value would be undefined when evaluating a*b,
+// and a call to multiply would normally have returned NaN. However, 
+// this is prevented by the second line in this example:
+
+function multiplys(a, b) {
+  b = typeof b !== "undefined" ? b : 1; // b = typeof b if not undefined else b = 1
+  return a * b;
+}
+
+console.log(multiplys(5)); // 5
+
+
+
+
+
+
+//In the following example, the function multiply uses rest parameters to collect arguments from the second one to the end.
+//  The function then multiplies these by the first argument.
+
+function multiply(multiplier, ...theArgs) {
+  return theArgs.map((x) => multiplier * x);
+}
+
+const arrs = multiply(2, 1, 2, 3);
+console.log(arrs); // [2, 4, 6]
+
+
+
+
+//In some functional patterns, shorter functions are welcome. Compare:
+
+const a1 = ["Hydrogen", "Helium", "Lithium", "Beryllium"];
+
+const a2 = a1.map(function (s) {
+  return s.length;
+});
+
+console.log(a2); // [8, 6, 7, 9]
+
+const a3 = a1.map((s) => s.length);
+
+console.log(a3); // [8, 6, 7, 9]
