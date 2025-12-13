@@ -1,0 +1,50 @@
+Step 1: Do logic-only projects (NO DOM yet)
+
+Use Node.js or browser console. Focus on thinking, not UI.
+
+Project 1: Student Result Analyzer
+
+Features
+
+Input marks array
+
+Calculate total, average
+
+Grade using conditions
+
+Detect pass/fail
+
+Concepts used
+Functions, loops, operators, conditionals
+
+
+
+
+Project 2: Number Utilities
+
+Create functions for:
+
+Prime check
+
+Factorial
+
+Fibonacci
+
+Even/odd filter from array
+
+(Think of this like JS version of DSA warm-up)
+
+
+
+
+Project 3: Mini Data Processor (ML-relevant)
+
+Take an array of numbers
+
+Normalize values
+
+Find min/max
+
+Count frequency
+
+This directly connects to data preprocessing in ML later.

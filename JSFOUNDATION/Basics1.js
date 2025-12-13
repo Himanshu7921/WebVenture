@@ -407,3 +407,79 @@ console.log(a2); // [8, 6, 7, 9]
 const a3 = a1.map((s) => s.length);
 
 console.log(a3); // [8, 6, 7, 9]
+
+
+
+
+
+//
+function Person() {
+  // Some choose `that` instead of `self`.
+  // Choose one and be consistent.
+  const self = this;
+  self.age = 0;
+
+  setInterval(function growUp() {
+    // The callback refers to the `self` variable of which
+    // the value is the expected object.
+    self.age++;
+  }, 1000);
+}
+
+const l = new Person();
+
+
+
+
+// An arrow function does not have its own this; the this value of the enclosing execution context is used.
+// Thus, in the following code, the this within the function that is passed to setInterval has the same
+// value as this in the enclosing function:
+function Persons() {
+  this.age = 0;
+
+  setInterval(() => {
+    this.age++; // `this` properly refers to the person object
+  }, 1000);
+}
+
+//print this when needed 
+// setInterval(() => {
+//   this.age++;
+//   console.log(this.age);
+// }, 1000);
+
+
+
+
+
+// Anonymous fucntion
+
+// Used with setTimeout
+setTimeout(function() {
+  console.log("Executed after 2 seconds!");
+}, 2000);
+
+// Used with array methods (forEach, map, filter)
+const numberss = [1, 2, 3];
+numberss.forEach(number => {   // for each number in numberss return (=>) console.log(number * 2);
+  console.log(number * 2); // Output: 2, 4, 6
+});
+
+
+//Name	Shorthand operator	Meaning
+// Assignment	x = f()	x = f()
+// Addition assignment	x += f()	x = x + f()
+// Subtraction assignment	x -= f()	x = x - f()
+// Multiplication assignment	x *= f()	x = x * f()
+// Division assignment	x /= f()	x = x / f()
+// Remainder assignment	x %= f()	x = x % f()
+// Exponentiation assignment	x **= f()	x = x ** f(), (x to the power f()) 
+// Left shift assignment	x <<= f()	x = x << f()
+// Right shift assignment	x >>= f()	x = x >> f()
+// Unsigned right shift assignment	x >>>= f()	x = x >>> f()
+// Bitwise AND assignment	x &= f()	x = x & f()
+// Bitwise XOR assignment	x ^= f()	x = x ^ f()
+// Bitwise OR assignment	x |= f()	x = x | f()
+// Logical AND assignment	x &&= f()	x && (x = f())
+// Logical OR assignment	x ||= f()	x || (x = f()) override value
+// Nullish coalescing assignment	x ??= f()	x ?? (x = f()) keep value
