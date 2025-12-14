@@ -97,3 +97,16 @@ x2[f()] = g();
 
 //result = F F G F G
 
+
+
+
+
+//BigInt()
+console.log(9007199254740991 + 1); // correct
+console.log(9007199254740991 + 2); // ❌ wrong
+console.log(9007199254740991n + 2n); // correct
+
+let yy = 123456789012345678901234567890n;
+let uu = BigInt("123456789012345678901234567890");
+
+console.log(a === b); // true
