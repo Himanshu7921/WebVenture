@@ -110,3 +110,5 @@ let yy = 123456789012345678901234567890n;
 let uu = BigInt("123456789012345678901234567890");
 
 console.log(a === b); // true
+
+const bigintDiv = 5n / 2n; // 2n, because there's no 2.5 in BigInt
