@@ -112,3 +112,65 @@ let uu = BigInt("123456789012345678901234567890");
 console.log(a === b); // true
 
 const bigintDiv = 5n / 2n; // 2n, because there's no 2.5 in BigInt
+
+
+
+
+
+// classes in java script 
+class Student{
+  constructor(name,marks){
+    this.name = name;
+    this.marks = marks;
+  }
+  
+
+  getmarks(){
+    return this.marks >= 40 ? "Pass" : "fail";
+  }
+}
+
+const s1 = new Student("kalash",100);
+console.log(s1.getmarks());
+
+
+
+
+// Child classes inside a class
+
+class Animals{
+  constructor(name){
+    this.name = name;
+  }
+
+eat(){
+  return `${this.name} is eating`;
+}
+}
+
+class human extends Animals{
+  constructor(name,age){
+    super(name);
+    this.age = age;
+  }
+speak(){
+  return `${this.name} is speaking`;
+}
+
+getage(){
+  return `${this.name} is ${this.age}yr old`;
+}
+}
+
+class dogs extends Animals{
+  barks(){
+    return `${this.name} is barking`
+  }
+}
+
+
+const h1 = new human("kalash",19);
+console.log(h1.speak());
+
+const d1 = new dogs("himanshu",20);
+console.log(d1.barks());
