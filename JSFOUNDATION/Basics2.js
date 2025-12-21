@@ -175,3 +175,12 @@ console.log(h1.speak());
 const d1 = new dogs("himanshu",20);
 console.log(d1.barks());
 
+class func{
+auto(n) {
+  return n;
+}
+}
+
+const objj = new func
+console.log(objj.auto(7));
+
