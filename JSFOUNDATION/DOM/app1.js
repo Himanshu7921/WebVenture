@@ -19,11 +19,22 @@ let ul = document.querySelector('ul');
 // ul.firstChild.textContent = 'hello';
 // ul.childNodes[1].style.backgroundColor = 'blue'; // cannot apply on text node
 
-console.log(ul.children);
-console.log(ul.firstElementChild);
-console.log(ul.lastElementChild);
+// console.log(ul.children);
+// console.log(ul.firstElementChild);
+// console.log(ul.lastElementChild);
 
 
 
 // Sibling Node Traversal
 
+const div = document.querySelector('div');
+
+console.log(div.childNodes);
+
+console.log(ul.previousSibling);
+console.log(ul.nextSibling);
+
+console.log(document.querySelector('.container').childNodes.length);
+
+console.log(ul.previousElementSibling);
+console.log(ul.nextElementSibling);
