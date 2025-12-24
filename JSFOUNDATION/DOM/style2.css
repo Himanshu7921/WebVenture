@@ -4,14 +4,12 @@ body{
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    
     margin: 0;
 }
 
 .container{
 display: flex;
 flex-direction: column;
-
 align-items: center;
 gap: 10rem;
 }
@@ -47,7 +45,7 @@ font-size: 80px;
 
 .container-1 {
   margin-top: 9rem;
-  width: 100%;              /* 🔥 KEY FIX */
+  width: 100%;              
   display: flex;
   flex-direction: column;
   align-items: center; 
@@ -58,7 +56,13 @@ font-size: 80px;
   text-align: center;
   margin-top: 2rem;
   font-size: 20px;
+  display: none;
 }
+
+.hidden-content.reveal-btn {
+  display: block;
+}
+
 
 .reveal-btn {
     padding: 100px;
