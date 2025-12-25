@@ -31,7 +31,5 @@ ul .list-items{
 
 #main-heading{
 font-style: italic;
-flex-direction: column;
-justify-content: end;
-align-items: end;
 }
+
