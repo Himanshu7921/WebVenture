@@ -19,4 +19,4 @@ window.addEventListener('click', function(e){
     if (e.target === modalContainer){
         modalContainer.style.display = 'none';
     }
-});
+}); 

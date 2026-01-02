@@ -1,0 +1,44 @@
+/* 
+
+Accordian Styling
+
+*/
+
+body{
+    background: url(../Photos/question.jpg) no-repeat center center/cover;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;   
+}
+
+.accordion {
+    width: 65%;
+    background-color: white;
+    padding: 30px;
+    border-radius: 30px;
+}
+
+.accordion .accordion-title{
+    margin-bottom: 30px;
+    text-align: center;
+}
+
+.accordion .content-container .question{
+    padding: 18px 0px;
+    font-size: 22px;
+    cursor: pointer;
+    border-bottom: 1px solid black;
+    position: relative;
+}
+
+.accordion .content-container .question::after{
+    content: '+';
+    position:absolute;
+    right: -5px;
+}
+
+.accordion .content-container .answer{
+    padding-top: 15px;
+    font-size: 22px;
+}
