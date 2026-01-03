@@ -26,7 +26,7 @@ body{
 
 .accordion .content-container .question{
     padding: 18px 0px;
-    font-size: 22px;
+    font-size: 32px;
     cursor: pointer;
     border-bottom: 1px solid black;
     position: relative;
@@ -40,5 +40,26 @@ body{
 
 .accordion .content-container .answer{
     padding-top: 15px;
-    font-size: 22px;
+    font-size: 28px;
+    line-height: 1.5;
+    width: 100%;
+    height: 0px;
+    overflow: hidden;
+    transition: 0.5s;
+}
+
+/* Javascript Styling Link */
+
+.accordion .content-container.active .answer{
+    height: 150px;
+}
+
+
+.accordion .content-container.active .question{
+    font-size: 25px;
+    transition: .5s;
+}
+
+.accordion .content-container.active .question::after{
+    content: "-";
 }
