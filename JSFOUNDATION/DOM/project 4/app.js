@@ -49,7 +49,41 @@ let leadingSeconds = 0;
 let leadingMinutes = 0;
 let leadingHours = 0
 
+// Variables for set interval & timerstatus
 
 
-// window.setInterval(stopWatch,1);
+let timerInterval = null;
+let timerstatus = "stopped";
+
+startStopBtn.addEventListener('click', function(){
+
+    if (timerstatus === "stopped"){
+        timerInterval = window.setInterval(stopWatch,1000);
+        document.querySelector('.startStopBtn').innerHTML = `<i class="fa-solid fa-pause" id="pause"></i>`;
+        timerstatus = "started";
+    }else{
+        window.clearInterval(timerInterval);
+        document.querySelector('.startStopBtn').innerHTML = `<i class="fa-solid fa-play" id="play"></i>`;
+        timerstatus = "stopped";
+    }
+
+})
+
+
+resetBtn.addEventListener('click', function(){
+window.clearInterval(timerInterval);
+timerInterval = null;
+
+seconds = 0;
+minutes = 0;
+hours = 0;
+
+document.querySelector('.timer').textContent = "00:00:00";
+document.querySelector('.startStopBtn').innerHTML =
+    `<i class="fa-solid fa-play"></i>`;
+
+  // reset state
+timerstatus = "stopped";
+})
+
 
