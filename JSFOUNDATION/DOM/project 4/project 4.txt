@@ -1,0 +1,9 @@
+Key Concepts for Project
+
+1. document.querySelector()
+2. document.getElementById()
+3. addEventListener()
+4. if statements
+5. toStrings()
+6. setInterval()
+7. innerHTML

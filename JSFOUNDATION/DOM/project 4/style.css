@@ -1,0 +1,40 @@
+body{
+    height: 100vh;
+    background: url(../Photos/time.jpg) no-repeat center center/cover; 
+    display: flex;
+    justify-content: center;
+    align-items: center;   
+}
+
+.buttons{
+    display: flex;
+    justify-content: center;
+    justify-content: space-evenly;
+    padding-top: 10px;
+}
+
+
+.container{
+    background-color: white;
+    padding: 30px;
+    border-radius: 20px;
+    border: 2px solid rgb(5, 5, 5);
+}
+
+.timer{
+    font-size: 100px;
+}
+
+.buttons i{
+    color: white;
+    padding: 10px;
+    font-size: 2rem;
+}
+
+.buttons .startStopBtn{
+    background-color: green;
+}
+
+.buttons .resetBtn{
+    background-color: red;
+}
